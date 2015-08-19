@@ -12,6 +12,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h> // for rand()
 #include <string>
 #include <cmath>
 #include <SDL2/SDL.h> // 2.0.3
@@ -19,6 +20,7 @@
 
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
+const int GRID_PX_SIZE = 5;
 
 // Start SDL and create window
 bool init();
@@ -139,11 +141,18 @@ int main( int argc, char* args[] )
       printf("Failed to load media!\n");
     } else {
 
-      // MAIN LOOP
+      // MAIN
       bool quit = false;
 
       // Event handler
       SDL_Event e;
+
+      //TODO: Set up array
+      int grid[SCREEN_WIDTH/GRID_PX_SIZE][SCREEN_HEIGHT/GRID_PX_SIZE];
+      int grid_height = sizeof(grid)/sizeof(grid[0]);
+      int grid_width = sizeof(grid[0]);
+
+      printf("grid_height = %i, grid_width = %i\n", grid_height, grid_width);
 
       // While application is running
       while(!quit) {
@@ -151,9 +160,15 @@ int main( int argc, char* args[] )
         // While events in the event queue
         while(SDL_PollEvent(&e) != 0) {
 
-          // Reconize user exit
+          // Reconize user exit from X or press ESC key
           if(e.type == SDL_QUIT) {
             quit = true;
+          } else if(e.type == SDL_KEYDOWN) {
+            switch(e.key.keysym.sym) {
+              case SDLK_ESCAPE:
+                quit = true;
+                break;
+            }
           }
         }
 
@@ -163,10 +178,17 @@ int main( int argc, char* args[] )
         SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
         SDL_RenderClear(gRenderer);
 
-        // Render red filled rectangle
-        SDL_Rect fillRect = { SCREEN_WIDTH/4, SCREEN_HEIGHT/4, SCREEN_WIDTH/2, SCREEN_HEIGHT/2};
-        SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0x00, 0xFF);
-        SDL_RenderFillRect(gRenderer, &fillRect);
+        //TODO: Render grid
+        for(int x=0; x<grid_width-1; x++) {
+          for(int y=0; y<grid_height-1; y++) {
+            //if(((x % 2 == 0) && (y % 2 != 0)) || ((y % 2 == 0) && (x % 2 != 0))) {
+            if((rand() % 100) < 25) {
+              SDL_Rect fillRect = { x*GRID_PX_SIZE, y*GRID_PX_SIZE, GRID_PX_SIZE, GRID_PX_SIZE};
+              SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0x00, 0xFF);
+              SDL_RenderFillRect(gRenderer, &fillRect);
+            }
+          }
+        }
         
 				////Render green outlined quad
 				//SDL_Rect outlineRect = { SCREEN_WIDTH / 6, SCREEN_HEIGHT / 6, SCREEN_WIDTH * 2 / 3, SCREEN_HEIGHT * 2 / 3 };
