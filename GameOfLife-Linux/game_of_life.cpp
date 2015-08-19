@@ -21,7 +21,7 @@
 
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
-const int GRID_PX_SIZE = 5;
+const int GRID_PX_SIZE = 10;
 
 // Start SDL and create window
 bool init();
@@ -149,35 +149,34 @@ int main( int argc, char* args[] )
       SDL_Event e;
 
       // Set up array of elements
-      Element grid[SCREEN_WIDTH/GRID_PX_SIZE][SCREEN_HEIGHT/GRID_PX_SIZE];
-      int grid_height = sizeof(grid)/sizeof(grid[0]);
-      int grid_width = sizeof(grid[0]);
-
+      int grid_width = SCREEN_WIDTH/GRID_PX_SIZE;
+      int grid_height = SCREEN_HEIGHT/GRID_PX_SIZE;
+      Element grid[grid_width][grid_height];
+      printf("grid_height = %i, grid_width = %i\n", grid_height, grid_width);
 
       // Initialize at random
-      Element el;
+      Element* pEl = NULL;
+
       for(int x=0; x<grid_width-1; x++) {
         for(int y=0; y<grid_height-1; y++) {
+          Element el;
           if((rand() % 100) < 25) {
-            //Element el = Element::Init(x,y,true);
             el.Init(x,y,true);
+            //el.Init(x,y,true);
           } else {
-            //Element el = Element::Init(x,y,false);
             el.Init(x,y,false);
+            //el.Init(x,y,false);
           }
           grid[x][y] = el;
-          printf("created element at (%i, %i, %s)\n", el.pos_x(), el.pos_y(), el.is_alive() ? "true" : "false");
+          //printf("created element at (%i, %i, %s)\n", el.pos_x(), el.pos_y(), el.is_alive() ? "true" : "false");
         }
       }
-
-      printf("grid_height = %i, grid_width = %i\n", grid_height, grid_width);
+      printf("Initialized grid of elements. Entering Game Loop.\n");
 
       // While application is running
       while(!quit) {
-
         // While events in the event queue
         while(SDL_PollEvent(&e) != 0) {
-
           // Reconize user exit from X or press ESC key
           if(e.type == SDL_QUIT) {
             quit = true;
@@ -200,28 +199,29 @@ int main( int argc, char* args[] )
         for(int x=0; x<grid_width-1; x++) {
           for(int y=0; y<grid_height-1; y++) {
             //if(((x % 2 == 0) && (y % 2 != 0)) || ((y % 2 == 0) && (x % 2 != 0))) {
-            el = grid[x][y]
+            Element el = grid[x][y];
+            //printf("created element at (%i, %i, %s)\n", el.pos_x(), el.pos_y(), el.is_alive() ? "true" : "false");
 
-            //TODO: stubbing for now
-            switch(el.GetResult()) {
-              case WillLive:
-                // Color this grid space
-                SDL_Rect fillRect = { x*GRID_PX_SIZE, y*GRID_PX_SIZE, GRID_PX_SIZE, GRID_PX_SIZE};
-                SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0x00, 0xFF);
-                SDL_RenderFillRect(gRenderer, &fillRect);
-                break;
-              case WillDie:
-                // make grid space white
-                SDL_Rect fillRect = { x*GRID_PX_SIZE, y*GRID_PX_SIZE, GRID_PX_SIZE, GRID_PX_SIZE};
-                SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-                SDL_RenderFillRect(gRenderer, &fillRect);
-                break;
-              case WillNotChange:
-                // grid space same as before
-                break;
-            }
+            ////TODO: stubbing for now
+            //switch(el.GetResult()) {
+            //  case WillLive:
+            //    // Color this grid space
+            //    SDL_Rect fillRect = { x*GRID_PX_SIZE, y*GRID_PX_SIZE, GRID_PX_SIZE, GRID_PX_SIZE};
+            //    SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0x00, 0xFF);
+            //    SDL_RenderFillRect(gRenderer, &fillRect);
+            //    break;
+            //  case WillDie:
+            //    // make grid space white
+            //    SDL_Rect fillRect = { x*GRID_PX_SIZE, y*GRID_PX_SIZE, GRID_PX_SIZE, GRID_PX_SIZE};
+            //    SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+            //    SDL_RenderFillRect(gRenderer, &fillRect);
+            //    break;
+            //  case WillNotChange:
+            //    // grid space same as before
+            //    break;
+            //}
 
-            }
+            //}
           }
         }
         
