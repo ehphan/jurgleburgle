@@ -17,6 +17,7 @@
 #include <cmath>
 #include <SDL2/SDL.h> // 2.0.3
 #include <SDL2/SDL_image.h> // 2.0.0
+#include "element.h"
 
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
@@ -147,10 +148,27 @@ int main( int argc, char* args[] )
       // Event handler
       SDL_Event e;
 
-      //TODO: Set up array
-      int grid[SCREEN_WIDTH/GRID_PX_SIZE][SCREEN_HEIGHT/GRID_PX_SIZE];
+      // Set up array of elements
+      Element grid[SCREEN_WIDTH/GRID_PX_SIZE][SCREEN_HEIGHT/GRID_PX_SIZE];
       int grid_height = sizeof(grid)/sizeof(grid[0]);
       int grid_width = sizeof(grid[0]);
+
+
+      // Initialize at random
+      Element el;
+      for(int x=0; x<grid_width-1; x++) {
+        for(int y=0; y<grid_height-1; y++) {
+          if((rand() % 100) < 25) {
+            //Element el = Element::Init(x,y,true);
+            el.Init(x,y,true);
+          } else {
+            //Element el = Element::Init(x,y,false);
+            el.Init(x,y,false);
+          }
+          grid[x][y] = el;
+          printf("created element at (%i, %i, %s)\n", el.pos_x(), el.pos_y(), el.is_alive() ? "true" : "false");
+        }
+      }
 
       printf("grid_height = %i, grid_width = %i\n", grid_height, grid_width);
 
@@ -182,10 +200,27 @@ int main( int argc, char* args[] )
         for(int x=0; x<grid_width-1; x++) {
           for(int y=0; y<grid_height-1; y++) {
             //if(((x % 2 == 0) && (y % 2 != 0)) || ((y % 2 == 0) && (x % 2 != 0))) {
-            if((rand() % 100) < 25) {
-              SDL_Rect fillRect = { x*GRID_PX_SIZE, y*GRID_PX_SIZE, GRID_PX_SIZE, GRID_PX_SIZE};
-              SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0x00, 0xFF);
-              SDL_RenderFillRect(gRenderer, &fillRect);
+            el = grid[x][y]
+
+            //TODO: stubbing for now
+            switch(el.GetResult()) {
+              case WillLive:
+                // Color this grid space
+                SDL_Rect fillRect = { x*GRID_PX_SIZE, y*GRID_PX_SIZE, GRID_PX_SIZE, GRID_PX_SIZE};
+                SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0x00, 0xFF);
+                SDL_RenderFillRect(gRenderer, &fillRect);
+                break;
+              case WillDie:
+                // make grid space white
+                SDL_Rect fillRect = { x*GRID_PX_SIZE, y*GRID_PX_SIZE, GRID_PX_SIZE, GRID_PX_SIZE};
+                SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+                SDL_RenderFillRect(gRenderer, &fillRect);
+                break;
+              case WillNotChange:
+                // grid space same as before
+                break;
+            }
+
             }
           }
         }
