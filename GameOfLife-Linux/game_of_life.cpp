@@ -18,6 +18,7 @@
 #include <SDL2/SDL.h> // 2.0.3
 #include <SDL2/SDL_image.h> // 2.0.0
 #include "element.h"
+#include "world.h"
 
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
@@ -151,27 +152,13 @@ int main( int argc, char* args[] )
       // Set up array of elements
       int grid_width = SCREEN_WIDTH/GRID_PX_SIZE;
       int grid_height = SCREEN_HEIGHT/GRID_PX_SIZE;
-      Element grid[grid_width][grid_height];
-      printf("grid_height = %i, grid_width = %i\n", grid_height, grid_width);
 
-      // Initialize at random
-      Element* pEl = NULL;
+      // Initialize world
+      World w;
+      w.Init(grid_width, grid_height, 25, gRenderer, GRID_PX_SIZE);
 
-      for(int x=0; x<grid_width-1; x++) {
-        for(int y=0; y<grid_height-1; y++) {
-          Element el;
-          if((rand() % 100) < 25) {
-            el.Init(x,y,true);
-            //el.Init(x,y,true);
-          } else {
-            el.Init(x,y,false);
-            //el.Init(x,y,false);
-          }
-          grid[x][y] = el;
-          //printf("created element at (%i, %i, %s)\n", el.pos_x(), el.pos_y(), el.is_alive() ? "true" : "false");
-        }
-      }
-      printf("Initialized grid of elements. Entering Game Loop.\n");
+      printf("Initialized world filled with elements. Entering Game Loop.\n");
+      printf("element array: height = %i, width = %i\n", grid_height, grid_width);
 
       // While application is running
       while(!quit) {
@@ -190,59 +177,10 @@ int main( int argc, char* args[] )
         }
 
         // GAME LOOP HERE
-        
-        // Clear screen
-        SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-        SDL_RenderClear(gRenderer);
+        w.Cycle();
 
-        //TODO: Render grid
-        for(int x=0; x<grid_width-1; x++) {
-          for(int y=0; y<grid_height-1; y++) {
-            //if(((x % 2 == 0) && (y % 2 != 0)) || ((y % 2 == 0) && (x % 2 != 0))) {
-            Element el = grid[x][y];
-            //printf("created element at (%i, %i, %s)\n", el.pos_x(), el.pos_y(), el.is_alive() ? "true" : "false");
+        // add delay here?
 
-            ////TODO: stubbing for now
-            //switch(el.GetResult()) {
-            //  case WillLive:
-            //    // Color this grid space
-            //    SDL_Rect fillRect = { x*GRID_PX_SIZE, y*GRID_PX_SIZE, GRID_PX_SIZE, GRID_PX_SIZE};
-            //    SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0x00, 0xFF);
-            //    SDL_RenderFillRect(gRenderer, &fillRect);
-            //    break;
-            //  case WillDie:
-            //    // make grid space white
-            //    SDL_Rect fillRect = { x*GRID_PX_SIZE, y*GRID_PX_SIZE, GRID_PX_SIZE, GRID_PX_SIZE};
-            //    SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-            //    SDL_RenderFillRect(gRenderer, &fillRect);
-            //    break;
-            //  case WillNotChange:
-            //    // grid space same as before
-            //    break;
-            //}
-
-            //}
-          }
-        }
-        
-				////Render green outlined quad
-				//SDL_Rect outlineRect = { SCREEN_WIDTH / 6, SCREEN_HEIGHT / 6, SCREEN_WIDTH * 2 / 3, SCREEN_HEIGHT * 2 / 3 };
-				//SDL_SetRenderDrawColor( gRenderer, 0x00, 0xFF, 0x00, 0xFF );		
-				//SDL_RenderDrawRect( gRenderer, &outlineRect );
-				//
-				////Draw blue horizontal line
-				//SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0xFF, 0xFF );		
-				//SDL_RenderDrawLine( gRenderer, 0, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT / 2 );
-
-				////Draw vertical line of yellow dots
-				//SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0x00, 0xFF );
-				//for( int i = 0; i < SCREEN_HEIGHT; i += 4 )
-				//{
-				//	SDL_RenderDrawPoint( gRenderer, SCREEN_WIDTH / 2, i );
-				//}
-
-        // Update screen
-        SDL_RenderPresent(gRenderer);
       }
     }
   }
