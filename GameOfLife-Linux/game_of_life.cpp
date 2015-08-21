@@ -1,7 +1,5 @@
 /* Conway's Game of Life
  *
- * The Linux version of ehphan's Game of Life.
- *
  * Author: pvphan
  *
  * Notes: 
@@ -12,7 +10,6 @@
  */
 
 #include <stdio.h>
-#include <stdlib.h> // for rand()
 #include <string>
 #include <cmath>
 #include <SDL2/SDL.h> // 2.0.3

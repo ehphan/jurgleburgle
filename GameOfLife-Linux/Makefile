@@ -1,4 +1,4 @@
-OBJS = game_of_life.cpp element.cpp
+OBJS = game_of_life.cpp element.cpp world.cpp
 
 CC = g++
 
