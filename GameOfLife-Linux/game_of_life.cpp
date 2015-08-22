@@ -20,6 +20,7 @@
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 const int GRID_PX_SIZE = 10;
+const int LIFE_THRESH = 15;
 
 // Start SDL and create window
 bool init();
@@ -147,12 +148,12 @@ int main( int argc, char* args[] )
       SDL_Event e;
 
       // Set up array of elements
-      int grid_width = SCREEN_WIDTH/GRID_PX_SIZE;
       int grid_height = SCREEN_HEIGHT/GRID_PX_SIZE;
+      int grid_width = SCREEN_WIDTH/GRID_PX_SIZE;
 
       // Initialize world
       World w;
-      w.Init(grid_width, grid_height, 25, gRenderer, GRID_PX_SIZE);
+      w.Init(grid_height, grid_width, LIFE_THRESH, gRenderer, GRID_PX_SIZE);
 
       printf("Initialized world filled with elements. Entering Game Loop.\n");
       printf("element array: height = %i, width = %i\n", grid_height, grid_width);

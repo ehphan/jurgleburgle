@@ -5,11 +5,11 @@
 #include <SDL2/SDL.h> // 2.0.3
 #include <SDL2/SDL_image.h> // 2.0.0
 
-void World::Init( int width_, int height_, int percent_alive, 
+void World::Init( int height_, int width_, int percent_alive, 
   SDL_Renderer* rend_, int grid_px_size_ ) {
   
-  width = width_;
   height = height_;
+  width = width_;
   rend = rend_;
   grid_px_size = grid_px_size_;
 
@@ -18,13 +18,17 @@ void World::Init( int width_, int height_, int percent_alive,
     elements[i] = new Element[width];
   }
 
-  for(int x=0; x<width-1; x++) {
-    for(int y=0; y<height-1; y++) {
+  // Clear screen
+  SDL_SetRenderDrawColor(rend, 0xFF, 0xFF, 0xFF, 0xFF);
+  SDL_RenderClear(rend);
+
+  for(int x=0; x<height; x++) {
+    for(int y=0; y<width; y++) {
       Element el;
       if((rand() % 100) < percent_alive) {
         el.Init(x, y, true);
         // draw
-        SDL_Rect fillRect = { x*grid_px_size, y*grid_px_size, grid_px_size, grid_px_size};
+        SDL_Rect fillRect = { y*grid_px_size, x*grid_px_size, grid_px_size, grid_px_size};
         SDL_SetRenderDrawColor(rend, 0xFF, 0x00, 0x00, 0xFF); // red
         SDL_RenderFillRect(rend, &fillRect);
       } else {
@@ -39,14 +43,14 @@ void World::Init( int width_, int height_, int percent_alive,
 
 void World::Cycle() {
 
-  // Clear screen
-  SDL_SetRenderDrawColor(rend, 0xFF, 0xFF, 0xFF, 0xFF);
-  SDL_RenderClear(rend);
+  //// Clear screen
+  //SDL_SetRenderDrawColor(rend, 0xFF, 0xFF, 0xFF, 0xFF);
+  //SDL_RenderClear(rend);
 
   Element el;
   
-  for(int x=0; x<width-1; x++) {
-    for(int y=0; y<height-1; y++) {
+  for(int x=0; x<height; x++) {
+    for(int y=0; y<width; y++) {
       el = elements[x][y];
 
       // calculate status of element
