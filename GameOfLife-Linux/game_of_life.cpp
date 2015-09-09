@@ -177,8 +177,6 @@ int main( int argc, char* args[] )
         // GAME LOOP HERE
         w.Cycle();
 
-        // add delay here?
-
       }
     }
   }

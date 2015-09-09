@@ -13,6 +13,7 @@ class Element
     void becomes_alive();
     void dies();
     void stays_alive();
+    void display_status();
     int pos_x() { return x; };
     int pos_y() { return y; };
 };

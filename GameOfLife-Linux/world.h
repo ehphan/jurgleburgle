@@ -9,7 +9,6 @@ class World
   private:
     int width;
     int height;
-    //Element elements[int width][int height]; //TODO: fix this
     Element** elements = NULL;
     SDL_Renderer* rend = NULL;
     int grid_px_size;
@@ -17,4 +16,5 @@ class World
   public:
     void Init( int, int, int, SDL_Renderer*, int );
     void Cycle();
+    Element** GetElements() { return elements; };
 };
