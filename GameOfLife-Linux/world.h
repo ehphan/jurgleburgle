@@ -15,6 +15,6 @@ class World
 
   public:
     void Init( int, int, int, SDL_Renderer*, int );
-    void Cycle();
+    World Cycle();
     Element** GetElements() { return elements; };
 };

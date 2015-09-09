@@ -16,6 +16,7 @@
 #include <SDL2/SDL_image.h> // 2.0.0
 #include "element.h"
 #include "world.h"
+#include "unistd.h"
 
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
@@ -161,6 +162,9 @@ int main( int argc, char* args[] )
       // While application is running
       while(!quit) {
         // While events in the event queue
+        // pause
+        usleep(100000); //micro seconds
+
         while(SDL_PollEvent(&e) != 0) {
           // Reconize user exit from X or press ESC key
           if(e.type == SDL_QUIT) {
@@ -175,7 +179,7 @@ int main( int argc, char* args[] )
         }
 
         // GAME LOOP HERE
-        w.Cycle();
+        w = w.Cycle();
 
       }
     }
