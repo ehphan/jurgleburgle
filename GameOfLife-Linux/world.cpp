@@ -29,7 +29,8 @@ void World::Init( int height_, int width_, int percent_alive,
         el.Init(x, y, true);
         // draw
         SDL_Rect fillRect = { y*grid_px_size, x*grid_px_size, grid_px_size, grid_px_size};
-        SDL_SetRenderDrawColor(rend, 0xFF, 0x00, 0x00, 0xFF); // red
+        //SDL_SetRenderDrawColor(rend, 0xFF, 0x00, 0x00, 0xFF); // red
+        SDL_SetRenderDrawColor(rend, 0x00, 0x00, 0xFF, 0xFF); // blue
         SDL_RenderFillRect(rend, &fillRect);
       } else {
         el.Init(x, y, false);
@@ -153,7 +154,8 @@ World World::Cycle() {
       if (nel.is_alive()) {
         SDL_Rect fillRect;// = new SDL_Rect;
         fillRect = { y*grid_px_size, x*grid_px_size, grid_px_size, grid_px_size};
-        SDL_SetRenderDrawColor(rend, 0xFF, 0x00, 0x00, 0xFF); // red
+        //SDL_SetRenderDrawColor(rend, 0xFF, 0x00, 0x00, 0xFF); // red
+        SDL_SetRenderDrawColor(rend, 0x00, 0x00, 0xFF, 0xFF); // blue
         SDL_RenderFillRect(rend, &fillRect);
       }
     }
